@@ -12,6 +12,11 @@ export default class CustomHierarchyCmp extends LightningElement {
     department;
     accountId = '';
 
+    renderedCallback() {
+        const grid =  this.template.querySelector( 'lightning-tree-grid' );
+        grid.expandAll();
+    }
+
     @wire(getRecord, {recordId: '$recordId', fields: FIELDS})
     wiredRecord({error, data}) {
         if(error) {
@@ -30,7 +35,19 @@ export default class CustomHierarchyCmp extends LightningElement {
             console.log(error);
         }
         else if(data) {
-            this.gridData = JSON.parse( JSON.stringify( data ) );
+            let departments = JSON.parse( JSON.stringify( data ) );
+            let hierarchy = [];
+
+            departments.forEach((dept) => {
+                let children = departments.filter(child => dept.Id == child.Parent_Department__c);
+                if (children.length > 0) {
+                    dept._children = children;
+                }
+            })
+            
+            hierarchy = departments.filter(dept => dept.Id == this.recordId);
+            
+            this.gridData = hierarchy;
         }
     }
 }
