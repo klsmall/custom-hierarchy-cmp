@@ -6,6 +6,10 @@ import { getRecord } from 'lightning/uiRecordApi';
 
 export default class CustomHierarchyCmp extends LightningElement {
     @api recordId;
+    @api object;
+    @api header;
+    @api filterField
+
     gridColumns = GRID_COLUMNS; // definition of columns for the tree grid
     gridData = []; // data provided to the tree grid
     error;
@@ -17,15 +21,19 @@ export default class CustomHierarchyCmp extends LightningElement {
         grid.expandAll();
     }
 
-    @wire(getRecord, {recordId: '$recordId', fields: FIELDS})
+    @wire(getRecord, {recordId: '$recordId', fields: '$fields'})
     wiredRecord({error, data}) {
         if(error) {
             this.error = error;
             console.log(error);
         }
         else if(data) {
-            this.accountId = data.fields.Account__c.value;
+            this.accountId = data.fields[this.filterField].value;
         }
+    }
+
+    get fields() {
+        return this.object + '.' + this.filterField;
     }
 
     @wire(getDepartments, {accountId: '$accountId'})

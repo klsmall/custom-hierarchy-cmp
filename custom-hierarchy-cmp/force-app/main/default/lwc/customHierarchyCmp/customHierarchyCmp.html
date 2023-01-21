@@ -1,9 +1,11 @@
 <template>
     <div class="slds-p-around_medium">
+        <h1>{header}</h1>
         <lightning-tree-grid
             columns={gridColumns}
             data={gridData}
-            key-field="Name"
+            key-field="Id"
+            hide-checkbox-column="true"
         ></lightning-tree-grid>
     </div>
 </template>
