@@ -8,7 +8,8 @@
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
             <property label="Header" name="header" type="String" />
-            <property label="Object" name="object" type="String" />
+            <property label="Object" name="obj" type="String" />
+            <property label="Lookup Field" name="lookupField" type="String" />
             <property label="Filter Field" name="filterField" type="String" />
         </targetConfig>
     </targetConfigs>
