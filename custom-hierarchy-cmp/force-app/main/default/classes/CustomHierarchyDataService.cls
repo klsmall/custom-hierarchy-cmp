@@ -16,10 +16,12 @@ public with sharing class CustomHierarchyDataService {
     @AuraEnabled(cacheable=true)
     public static List<sObject> getRecords(String obj, String filterField, String filterFieldValue, String lookupField){
         try {
+            //use the fields defined in the custom hierarchy settings to build the query
             List<Custom_Hierarchy_Setting__mdt> custHierSetting = getCustomHierarchySettings(obj);
 
             Set<String> fields = new Set<String>();
 
+            //add the fields to a set, ensuring no duplicate fields
             for(Custom_Hierarchy_Setting__mdt setting : custHierSetting) {
                 fields.add(setting.fieldName__c);
             }
@@ -28,6 +30,7 @@ public with sharing class CustomHierarchyDataService {
             String joinedFields = String.join(new List<String>(fields), ', ');
             String query = 'SELECT Id, ' + joinedFields + ' FROM ' + obj; 
             
+            //make filter field optional
             if(String.isNotEmpty(filterField)) {
                 query += ' WHERE ' + filterField + ' = :filterFieldValue';
             }
