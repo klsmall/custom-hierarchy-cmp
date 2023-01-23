@@ -1,6 +1,6 @@
 public with sharing class CustomHierarchyDataService {
     @AuraEnabled(cacheable=true)
-    public static List<Department__c> getRecords(String obj, String filterField, String filterFieldValue, String lookupField){
+    public static List<sObject> getRecords(String obj, String filterField, String filterFieldValue, String lookupField){
         try {
             List<Custom_Hierarchy_Setting__mdt> custHierSetting = getCustomHierarchySettings(obj);
 
@@ -12,18 +12,17 @@ public with sharing class CustomHierarchyDataService {
             fields.add(lookupField);
 
             String joinedFields = String.join(new List<String>(fields), ', ');
-            String query = 'SELECT Id, ' + joinedFields + ' FROM ' + obj + ' WHERE ' + filterField + ' = :filterFieldValue'; 
-            System.debug(query);
+            String query = 'SELECT Id, ' + joinedFields + ' FROM ' + obj; 
+            
+            if(String.isNotEmpty(filterField)) {
+                query += ' WHERE ' + filterField + ' = :filterFieldValue';
+            }
+
+            query += ' WITH SECURITY_ENFORCED';
 
             List<sObject> records = Database.query(query);
-            System.debug(records);
 
-            List<Department__c> departments = [
-                SELECT Id, Name, Number_of_Employees__c, Phone__c, Point_of_Contact__c, Parent_Department__c 
-                FROM Department__c
-                WHERE Account__c = :filterFieldValue
-            ];
-            return departments;
+            return records;
         } catch (Exception e) {
             System.debug(e.getMessage());
             throw new AuraHandledException(e.getMessage());

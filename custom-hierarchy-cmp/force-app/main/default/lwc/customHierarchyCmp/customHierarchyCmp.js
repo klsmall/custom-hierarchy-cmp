@@ -1,8 +1,8 @@
 import { LightningElement, wire, api } from 'lwc';
-import { FIELDS, GRID_COLUMNS } from './constants.js';
+import { getRecord } from 'lightning/uiRecordApi';
 
 import getRecords from '@salesforce/apex/CustomHierarchyDataService.getRecords';
-import { getRecord } from 'lightning/uiRecordApi';
+import getCustomHierarchySettings from '@salesforce/apex/CustomHierarchyDataService.getCustomHierarchySettings';
 
 export default class CustomHierarchyCmp extends LightningElement {
     @api recordId;
@@ -10,9 +10,8 @@ export default class CustomHierarchyCmp extends LightningElement {
     @api obj;
     @api lookupField;
     @api filterField;
-    
 
-    gridColumns = GRID_COLUMNS; // definition of columns for the tree grid
+    gridColumns = ''; // definition of columns for the tree grid
     gridData = []; // data provided to the tree grid
     filterFieldValue = '';
     error;
@@ -62,6 +61,28 @@ export default class CustomHierarchyCmp extends LightningElement {
             hierarchy = records.filter(record => record.Id == this.recordId);
             
             this.gridData = hierarchy;
+        }
+    }
+
+    @wire(getCustomHierarchySettings, {obj: '$obj'})
+    wiredCustHierSetting({error, data}) {
+        if(error) {
+            this.error = error;
+            console.log(error);
+        }
+        else if(data) {
+            let custHierSetting = JSON.parse( JSON.stringify( data ) );
+            let columns = [];
+            
+            custHierSetting.forEach((setting) => {
+                columns.push({
+                    type: setting.type__c, 
+                    fieldName: setting.fieldName__c, 
+                    label: setting.label__c
+                });
+            });
+
+            this.gridColumns = columns;
         }
     }
 }

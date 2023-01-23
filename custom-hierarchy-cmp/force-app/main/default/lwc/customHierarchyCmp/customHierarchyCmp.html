@@ -1,11 +1,16 @@
 <template>
     <div class="slds-p-around_medium">
-        <h1>{header}</h1>
-        <lightning-tree-grid
-            columns={gridColumns}
-            data={gridData}
-            key-field="Id"
-            hide-checkbox-column="true"
-        ></lightning-tree-grid>
+        <lightning-card>
+            <h3 slot="title">
+                <lightning-icon class="card-icon" icon-name="standard:hierarchy" size="small"></lightning-icon>
+                {header}
+            </h3>
+            <lightning-tree-grid
+                columns={gridColumns}
+                data={gridData}
+                key-field="Id"
+                hide-checkbox-column="true"
+            ></lightning-tree-grid>
+        </lightning-card>
     </div>
 </template>
