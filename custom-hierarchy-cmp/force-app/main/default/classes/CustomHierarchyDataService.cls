@@ -1,4 +1,18 @@
+/*******************************************************************************************
+* @Name         CustomHierarchyDataService 
+* @Author       Kimberly Small
+* @Date         01/22/2023
+* @Description  This class contains all data service methods for customHierarchyCmp.
+*******************************************************************************************/
 public with sharing class CustomHierarchyDataService {
+
+    /**
+     * @description retrieve records required to build the hierarchy based on values provided by the user
+     * @param obj object records should be pulled from
+     * @param filterField field used to filter and limit the amount of records returned
+     * @param filterFieldValue value from the current record that should be used for filtering
+     * @param lookupField lookup field used to build the hierarchy 
+     */
     @AuraEnabled(cacheable=true)
     public static List<sObject> getRecords(String obj, String filterField, String filterFieldValue, String lookupField){
         try {
@@ -29,6 +43,10 @@ public with sharing class CustomHierarchyDataService {
         }
     }
 
+    /**
+     * @description retrieve custom metadata settings to populate tree-grid columns
+     * @param obj object the custom metadata settings should be pulled for
+     */
     @AuraEnabled(cacheable=true)
     public static List<Custom_Hierarchy_Setting__mdt> getCustomHierarchySettings(String obj){
         try {
