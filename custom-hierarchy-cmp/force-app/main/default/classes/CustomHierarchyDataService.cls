@@ -47,7 +47,7 @@ public with sharing class CustomHierarchyDataService {
      * @description retrieve custom metadata settings to populate tree-grid columns
      * @param obj object the custom metadata settings should be pulled for
      */
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled(cacheable=true) @TestVisible
     public static List<Custom_Hierarchy_Setting__mdt> getCustomHierarchySettings(String obj){
         try {
             Custom_Hierarchy_Setting__mdt[] custHierSetting = [SELECT label__c, type__c, fieldName__c FROM Custom_Hierarchy_Setting__mdt WHERE object__c = :obj];
