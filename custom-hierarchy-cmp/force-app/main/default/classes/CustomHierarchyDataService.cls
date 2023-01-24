@@ -28,14 +28,7 @@ public with sharing class CustomHierarchyDataService {
             fields.add(lookupField);
 
             String joinedFields = String.join(new List<String>(fields), ', ');
-            String query = 'SELECT Id, ' + joinedFields + ' FROM ' + obj; 
-            
-            //make filter field optional
-            if(String.isNotEmpty(filterField)) {
-                query += ' WHERE ' + filterField + ' = :filterFieldValue';
-            }
-
-            query += ' WITH SECURITY_ENFORCED';
+            String query = 'SELECT Id, ' + joinedFields + ' FROM ' + obj + ' WHERE ' + filterField + ' = :filterFieldValue WITH SECURITY_ENFORCED';
 
             List<sObject> records = Database.query(query);
 

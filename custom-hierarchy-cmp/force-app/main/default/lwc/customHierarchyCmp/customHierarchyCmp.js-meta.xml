@@ -10,7 +10,7 @@
             <property label="Header" name="header" description="Header for the component." type="String" placeholder="Custom Hierarchy Component" required="true" />
             <property label="Object" name="obj" description="Object the hierarchy should be applied to." type="String" required="true" />
             <property label="Lookup Field" description="Lookup field on the object the hierarchy should be applied to." name="lookupField" type="String" required="true" />
-            <property label="Filter Field" description="Filter field on the object the hierarchy should be applied to." name="filterField" type="String" />
+            <property label="Filter Field" description="Filter field on the object the hierarchy should be applied to." name="filterField" type="String" required="true"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
